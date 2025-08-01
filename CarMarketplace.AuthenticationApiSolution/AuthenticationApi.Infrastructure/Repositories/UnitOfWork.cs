@@ -1,0 +1,28 @@
+﻿using AuthenticationApi.Domain.Entities;
+using AuthenticationApi.Domain.Interfaces;
+using AuthenticationApi.Infrastructure.Data;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace AuthenticationApi.Infrastructure.Repositories
+{
+    public class UnitOfWork : IUnitOfWork
+    {
+        private readonly AppDbContext _context;
+        private IRepository<User>? _userRepository;
+        private IRepository<UserRole>? _userRoleRepository;
+
+        public UnitOfWork(AppDbContext context)
+        {
+            _context = context;
+        }
+
+        public IRepository<User> Users => _userRepository ??= new Repository<User>(_context);
+        public IRepository<UserRole> UserRoles => _userRoleRepository ??= new Repository<UserRole>(_context);
+
+        public async Task<int> CompleteAsync() => await _context.SaveChangesAsync();
+    }
+}
