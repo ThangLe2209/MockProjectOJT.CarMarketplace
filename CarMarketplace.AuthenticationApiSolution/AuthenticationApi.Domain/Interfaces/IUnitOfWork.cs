@@ -11,6 +11,7 @@ namespace AuthenticationApi.Domain.Interfaces
     {
         IRepository<User> Users { get; }
         IRepository<UserRole> UserRoles { get; }
+        IRepository<OutboxEvent> OutboxEvents { get; }
         Task<int> CompleteAsync();
     }
 }

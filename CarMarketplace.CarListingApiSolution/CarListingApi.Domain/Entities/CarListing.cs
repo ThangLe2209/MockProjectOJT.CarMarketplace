@@ -17,6 +17,7 @@ namespace CarListingApi.Domain.Entities
         public int Year { get; set; }
         public int Mileage { get; set; }
         public string Color { get; set; } = default!;
+        public string Image { get; set; } = default!;
         public int SellerId { get; set; }
     }
 }

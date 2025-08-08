@@ -8,11 +8,8 @@ namespace AuthenticationApi.Application.DTOs
 
         [Required(ErrorMessage = "Input Password"), MinLength(4, ErrorMessage = "MinLength Password is 4")]
         public string? Password { get; set; }
-        public bool Active { get; set; }
 
         [Required(ErrorMessage = "Input Email"), MinLength(4, ErrorMessage = "MinLength Email is 4")]
         public string? Email { get; set; }
-
-        public int UserRoleId { get; set; }
     }
 }

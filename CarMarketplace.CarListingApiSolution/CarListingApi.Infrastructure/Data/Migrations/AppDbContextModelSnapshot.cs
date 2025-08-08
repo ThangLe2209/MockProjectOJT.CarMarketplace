@@ -41,6 +41,10 @@ namespace CarListingApi.Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Make")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -79,6 +83,7 @@ namespace CarListingApi.Infrastructure.Data.Migrations
                             Color = "Silver",
                             CreatedDate = new DateTime(2024, 5, 19, 23, 42, 59, 0, DateTimeKind.Local),
                             Description = "Well-maintained sedan with excellent fuel economy and low mileage.",
+                            Image = "https://hips.hearstapps.com/hmg-prod/amv-prod-cad-assets/images/17q3/685270/2018-toyota-camry-se-25l-test-review-car-and-driver-photo-691169-s-original.jpg",
                             Make = "Toyota",
                             Mileage = 45000,
                             Model = "Camry",
@@ -92,32 +97,168 @@ namespace CarListingApi.Infrastructure.Data.Migrations
                         {
                             Id = 2,
                             Color = "Blue",
-                            CreatedDate = new DateTime(2024, 5, 19, 23, 42, 59, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2024, 5, 20, 0, 42, 59, 0, DateTimeKind.Local),
                             Description = "Sporty and reliable compact car with modern features and great handling.",
+                            Image = "https://cdn.jdpower.com/ChromeImageGallery/Expanded/Transparent/640/2020HOC18_640/2020HOC180001_640_01.png",
                             Make = "Honda",
                             Mileage = 30000,
                             Model = "Civic",
                             Price = 20500.00m,
                             SellerId = 2,
                             Title = "2020 Honda Civic Sport",
-                            UpdatedDate = new DateTime(2024, 5, 19, 23, 42, 59, 0, DateTimeKind.Local),
+                            UpdatedDate = new DateTime(2024, 5, 20, 0, 42, 59, 0, DateTimeKind.Local),
                             Year = 2020
                         },
                         new
                         {
                             Id = 3,
                             Color = "Red",
-                            CreatedDate = new DateTime(2024, 5, 19, 23, 42, 59, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2024, 5, 20, 1, 42, 59, 0, DateTimeKind.Local),
                             Description = "Powerful pickup truck with towing package and spacious cabin.",
+                            Image = "https://www.kbb.com/wp-content/uploads/2014/07/2015-ford-f-150-xlt-front-static-600-001.jpg",
                             Make = "Ford",
                             Mileage = 75000,
                             Model = "F-150",
                             Price = 22999.99m,
                             SellerId = 1,
                             Title = "2015 Ford F-150 XLT",
-                            UpdatedDate = new DateTime(2024, 5, 19, 23, 42, 59, 0, DateTimeKind.Local),
+                            UpdatedDate = new DateTime(2024, 5, 20, 1, 42, 59, 0, DateTimeKind.Local),
                             Year = 2015
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Color = "White",
+                            CreatedDate = new DateTime(2024, 5, 20, 2, 42, 59, 0, DateTimeKind.Local),
+                            Description = "Comfortable sedan with advanced safety features and smooth ride.",
+                            Image = "https://vexstockimages.fastly.carvana.io/stockimages/2019_Chevrolet_Malibu_LT%20Sedan%204D_WHITE_stock_mobile_640x640.png",
+                            Make = "Chevrolet",
+                            Mileage = 38000,
+                            Model = "Malibu",
+                            Price = 17999.00m,
+                            SellerId = 2,
+                            Title = "2019 Chevrolet Malibu LT",
+                            UpdatedDate = new DateTime(2024, 5, 20, 2, 42, 59, 0, DateTimeKind.Local),
+                            Year = 2019
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Color = "Black",
+                            CreatedDate = new DateTime(2024, 5, 20, 3, 42, 59, 0, DateTimeKind.Local),
+                            Description = "Reliable midsize sedan with great fuel efficiency.",
+                            Image = "https://images.automatrix.com/1/99228/rKnx6gGpepMj.jpg",
+                            Make = "Nissan",
+                            Mileage = 60000,
+                            Model = "Altima",
+                            Price = 15500.00m,
+                            SellerId = 1,
+                            Title = "2017 Nissan Altima S",
+                            UpdatedDate = new DateTime(2024, 5, 20, 3, 42, 59, 0, DateTimeKind.Local),
+                            Year = 2017
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Color = "White",
+                            CreatedDate = new DateTime(2024, 5, 20, 4, 42, 59, 0, DateTimeKind.Local),
+                            Description = "Electric sedan with autopilot and premium interior.",
+                            Image = "https://static.cargurus.com/images/forsale/2025/05/28/16/05/2021_tesla_model_3-pic-7064985328337502694-1024x768.jpeg",
+                            Make = "Tesla",
+                            Mileage = 12000,
+                            Model = "Model 3",
+                            Price = 37999.00m,
+                            SellerId = 1,
+                            Title = "2021 Tesla Model 3 Standard Range Plus",
+                            UpdatedDate = new DateTime(2024, 5, 20, 4, 42, 59, 0, DateTimeKind.Local),
+                            Year = 2021
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Color = "Gray",
+                            CreatedDate = new DateTime(2024, 5, 20, 5, 42, 59, 0, DateTimeKind.Local),
+                            Description = "Luxury sedan with sporty handling and premium features.",
+                            Image = "https://images.hgmsites.net/lrg/2016-bmw-3-series-4-door-sedan-328i-rwd-angular-front-exterior-view_100545095_l.jpg",
+                            Make = "BMW",
+                            Mileage = 52000,
+                            Model = "320i",
+                            Price = 20999.00m,
+                            SellerId = 1,
+                            Title = "2016 BMW 3 Series 320i",
+                            UpdatedDate = new DateTime(2024, 5, 20, 5, 42, 59, 0, DateTimeKind.Local),
+                            Year = 2016
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Color = "Blue",
+                            CreatedDate = new DateTime(2024, 5, 20, 6, 42, 59, 0, DateTimeKind.Local),
+                            Description = "Spacious sedan with smooth ride and great value.",
+                            Image = "https://upload.wikimedia.org/wikipedia/commons/1/1f/2014_Hyundai_Sonata_%28LF_MY14%29_Active_sedan_%282018-10-29%29_01.jpg",
+                            Make = "Hyundai",
+                            Mileage = 85000,
+                            Model = "Sonata",
+                            Price = 10999.00m,
+                            SellerId = 2,
+                            Title = "2014 Hyundai Sonata GLS",
+                            UpdatedDate = new DateTime(2024, 5, 20, 6, 42, 59, 0, DateTimeKind.Local),
+                            Year = 2014
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Color = "Green",
+                            CreatedDate = new DateTime(2024, 5, 20, 7, 42, 59, 0, DateTimeKind.Local),
+                            Description = "All-wheel drive wagon with advanced safety and comfort.",
+                            Image = "https://i.pinimg.com/474x/91/24/26/912426871ef2767eb2536724e01672d0.jpg",
+                            Make = "Subaru",
+                            Mileage = 29000,
+                            Model = "Outback",
+                            Price = 25999.00m,
+                            SellerId = 1,
+                            Title = "2019 Subaru Outback Premium",
+                            UpdatedDate = new DateTime(2024, 5, 20, 7, 42, 59, 0, DateTimeKind.Local),
+                            Year = 2019
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Color = "Silver",
+                            CreatedDate = new DateTime(2024, 5, 20, 8, 42, 59, 0, DateTimeKind.Local),
+                            Description = "Compact sedan with German engineering and great mileage.",
+                            Image = "https://primeautoomaha.com/wp-content/uploads/2023/07/1-2013-volkswagen-vw-jetta-s-silver-prime-auto-omaha.jpg",
+                            Make = "Volkswagen",
+                            Mileage = 95000,
+                            Model = "Jetta",
+                            Price = 8999.00m,
+                            SellerId = 1,
+                            Title = "2013 Volkswagen Jetta SE",
+                            UpdatedDate = new DateTime(2024, 5, 20, 8, 42, 59, 0, DateTimeKind.Local),
+                            Year = 2013
                         });
+                });
+
+            modelBuilder.Entity("CarListingApi.Domain.Entities.ProcessedEvent", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("EventType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Payload")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ProcessedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProcessedEvent");
                 });
 #pragma warning restore 612, 618
         }

@@ -8,14 +8,16 @@ namespace CarListingApi.Infrastructure.Repositories
     public class UnitOfWork : IUnitOfWork
     {
         private readonly AppDbContext _context;
-        private IRepository<CarListing>? _carRepository;
+        private ICarRepository? _carRepository;
+        private IRepository<ProcessedEvent>? _processedEventRepository;
 
         public UnitOfWork(AppDbContext context)
         {
             _context = context;
         }
 
-        public IRepository<CarListing> Cars => _carRepository ??= new Repository<CarListing>(_context);
+        public ICarRepository Cars => _carRepository ??= new CarRepository(_context);
+        public IRepository<ProcessedEvent> ProcessedEvents => _processedEventRepository ??= new Repository<ProcessedEvent>(_context);
 
         public async Task<int> CompleteAsync() => await _context.SaveChangesAsync();
     }

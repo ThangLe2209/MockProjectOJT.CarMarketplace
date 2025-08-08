@@ -9,7 +9,8 @@ namespace CarListingApi.Domain.Interfaces
 {
     public interface IUnitOfWork
     {
-        IRepository<CarListing> Cars { get; }
+        ICarRepository Cars { get; }
+        IRepository<ProcessedEvent> ProcessedEvents { get; }
         Task<int> CompleteAsync();
     }
 }

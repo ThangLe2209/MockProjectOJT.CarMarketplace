@@ -1,5 +1,6 @@
 using AuthenticationApi.Application;
 using AuthenticationApi.Domain.Interfaces;
+using AuthenticationApi.Infrastructure;
 using AuthenticationApi.Infrastructure.Data;
 using AuthenticationApi.Infrastructure.Repositories;
 using AuthenticationApi.Presentation.Exceptions;
@@ -39,6 +40,7 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddApplication(builder.Configuration);
+builder.Services.AddInfrastructure(builder.Configuration);
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -56,10 +58,14 @@ if (app.Environment.IsDevelopment())
 app.ConfigureBuildInExceptionHandler(); // global exception
 
 //app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate(); // Apply migrations at startup
+}
 app.Run();

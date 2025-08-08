@@ -5,6 +5,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using System.Text.Json;
 
 namespace CarListingApi.Presentation.Controllers
 {
@@ -13,29 +14,58 @@ namespace CarListingApi.Presentation.Controllers
     public class CarsController : Controller
     {
         private readonly ISender _sender;
-        public CarsController(ISender sender)
+        private readonly ILogger<CarsController> _logger;
+        public CarsController(ISender sender, ILogger<CarsController> logger)
         {
             _sender = sender ?? throw new ArgumentNullException(nameof(sender));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<IEnumerable<CarListingDto>>> GetCars()
+        //[Authorize(Roles = "Admin")]
+        [Authorize(Policy = "CheckAdminPolicy")]
+        public async Task<ActionResult<IEnumerable<CarListingDto>>> GetCars(string? searchTerm = "", int pageNumber = 1, int pageSize = 10, string? sort = "price_asc")
         {
-            var results = await _sender.Send(new GetAllCarQuery());
-            return Ok(new SuccessResponse<IEnumerable<CarListingDto>>(results, HttpContext.Request.Path));
+            var (carEntities, paginationMetadata) = await _sender.Send(new GetAllCarQuery(searchTerm, pageNumber, pageSize, sort));
+
+            Response.Headers.Append("X-Pagination", JsonSerializer.Serialize(paginationMetadata));
+            return Ok(new SuccessResponse<IEnumerable<CarListingDto>>(carEntities, HttpContext.Request.Path));
         }
 
         [HttpGet("{carId}", Name = "GetCarById")]
         public async Task<IActionResult> GetCarByIdAsync(int carId)
         {
-            var car = await _sender.Send(new GetCarQuery(carId));
+            _logger.LogInformation("Fetching car with ID {CarId}", carId);
+
+            try
+            {
+                var car = await _sender.Send(new GetCarQuery(carId));
+                if (car == null)
+                {
+                    _logger.LogWarning("Car with ID {CarId} not found", carId);
+                    return NotFound(new BadRequestResponse(HttpContext.Request.Path, "Car not existed"));
+                }
+
+                _logger.LogInformation("Successfully fetched car with ID {CarId}", carId);
+                return Ok(new SuccessResponse<CarListingDto>(car, HttpContext.Request.Path));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching car with ID {CarId}", carId);
+                throw;
+            }
+        }
+
+        [HttpGet("{carId}/withseller", Name = "GetCarWithSeller")]
+        public async Task<IActionResult> GetCarWithSellerAsync(int carId)
+        {
+            var car = await _sender.Send(new GetCarWithSellerQuery(carId));
             if (car == null)
             {
                 return NotFound(new BadRequestResponse(HttpContext.Request.Path, "Car not existed"));
             }
 
-            return Ok(new SuccessResponse<CarListingDto>(car, HttpContext.Request.Path));
+            return Ok(new SuccessResponse<CarWithSellerDto>(car, HttpContext.Request.Path));
         }
 
         [HttpPost]

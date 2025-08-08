@@ -1,11 +1,6 @@
 ﻿using AuthenticationApi.Domain.Entities;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AuthenticationApi.Infrastructure.Data
 {
@@ -15,6 +10,7 @@ namespace AuthenticationApi.Infrastructure.Data
         DbSet<User> User { get; set; }
         DbSet<UserClaim> UserClaims { get; set; }
         DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<OutboxEvent> OutboxEvents { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
@@ -23,6 +19,11 @@ namespace AuthenticationApi.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Add these lines for MassTransit Outbox
+            //modelBuilder.AddInboxStateEntity();
+            //modelBuilder.AddOutboxMessageEntity();
+            //modelBuilder.AddOutboxStateEntity();
+
             var userRoles = new List<UserRole>
             {
                 new UserRole { Id = 1, Value = "Admin" },

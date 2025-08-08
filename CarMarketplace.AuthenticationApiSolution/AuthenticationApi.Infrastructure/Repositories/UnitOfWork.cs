@@ -14,6 +14,7 @@ namespace AuthenticationApi.Infrastructure.Repositories
         private readonly AppDbContext _context;
         private IRepository<User>? _userRepository;
         private IRepository<UserRole>? _userRoleRepository;
+        private IRepository<OutboxEvent>? _outboxEventRepository;
 
         public UnitOfWork(AppDbContext context)
         {
@@ -22,6 +23,7 @@ namespace AuthenticationApi.Infrastructure.Repositories
 
         public IRepository<User> Users => _userRepository ??= new Repository<User>(_context);
         public IRepository<UserRole> UserRoles => _userRoleRepository ??= new Repository<UserRole>(_context);
+        public IRepository<OutboxEvent> OutboxEvents => _outboxEventRepository ??= new Repository<OutboxEvent>(_context);
 
         public async Task<int> CompleteAsync() => await _context.SaveChangesAsync();
     }
