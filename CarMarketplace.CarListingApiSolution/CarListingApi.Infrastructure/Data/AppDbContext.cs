@@ -37,7 +37,8 @@ namespace CarListingApi.Infrastructure.Data
                     Image = "https://hips.hearstapps.com/hmg-prod/amv-prod-cad-assets/images/17q3/685270/2018-toyota-camry-se-25l-test-review-car-and-driver-photo-691169-s-original.jpg",
                     CreatedDate = tempCurrentDate.AddHours(1),
                     UpdatedDate = tempCurrentDate.AddHours(1),
-                    SellerId = 1
+                    SellerId = 1,
+                    Quantity = 3
                 },
                 new CarListing
                 {
@@ -53,7 +54,8 @@ namespace CarListingApi.Infrastructure.Data
                     Image = "https://cdn.jdpower.com/ChromeImageGallery/Expanded/Transparent/640/2020HOC18_640/2020HOC180001_640_01.png",
                     CreatedDate = tempCurrentDate.AddHours(2),
                     UpdatedDate = tempCurrentDate.AddHours(2),
-                    SellerId = 2
+                    SellerId = 2,
+                    Quantity = 2
                 },
                 new CarListing
                 {
@@ -185,7 +187,7 @@ namespace CarListingApi.Infrastructure.Data
                 }
             };
 
-            modelBuilder.Entity<CarListing>().HasData(cars);
+            modelBuilder.Entity<CarListing>().HasQueryFilter(c => !c.IsDeleted).HasData(cars);
 
             base.OnModelCreating(modelBuilder);
         }

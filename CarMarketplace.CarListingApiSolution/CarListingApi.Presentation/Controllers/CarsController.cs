@@ -23,7 +23,7 @@ namespace CarListingApi.Presentation.Controllers
 
         [HttpGet]
         //[Authorize(Roles = "Admin")]
-        [Authorize(Policy = "CheckAdminPolicy")]
+        //[Authorize(Policy = "CheckAdminPolicy")]
         public async Task<ActionResult<IEnumerable<CarListingDto>>> GetCars(string? searchTerm = "", int pageNumber = 1, int pageSize = 10, string? sort = "price_asc")
         {
             var (carEntities, paginationMetadata) = await _sender.Send(new GetAllCarQuery(searchTerm, pageNumber, pageSize, sort));
@@ -81,6 +81,13 @@ namespace CarListingApi.Presentation.Controllers
                 , new SuccessResponse<CarListingDto>(createdCarToReturn, HttpContext.Request.Path, "Car created successfully"));
         }
 
+        [HttpPost("restore/{carId}")]
+        public async Task<IActionResult> RestoreCarAsync(int carId)
+        {
+            await _sender.Send(new RestoreCarCommand(carId));
+            return NoContent();
+        }
+
         [HttpPut("{carId}")]
         public async Task<IActionResult> UpdateCarAsync(int carId, CarInputDto updatedCar)
         {
@@ -88,8 +95,15 @@ namespace CarListingApi.Presentation.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{carId}")]
+        [HttpDelete("soft/{carId}")]
         public async Task<ActionResult> DeleteCarAsync(int carId)
+        {
+            await _sender.Send(new SoftDeleteCarCommand(carId));
+            return NoContent();
+        }
+
+        [HttpDelete("{carId}")]
+        public async Task<ActionResult> DeleteCarWithoutSoftAsync(int carId)
         {
             await _sender.Send(new DeleteCarCommand(carId));
             return NoContent();

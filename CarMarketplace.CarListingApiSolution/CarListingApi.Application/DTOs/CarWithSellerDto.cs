@@ -15,5 +15,7 @@ namespace CarListingApi.Application.DTOs
         public string Color { get; set; } = default!;
         public string Image { get; set; } = default!;
         public UserDto? Seller { get; set; }
+        public string Status { get; set; } = default!;
+        public int Quantity { get; set; }
     }
 }

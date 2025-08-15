@@ -40,7 +40,7 @@ namespace AuthenticationApi.Infrastructure.Data
             };
 
             modelBuilder.Entity<UserRole>().HasData(userRoles);
-            modelBuilder.Entity<User>().HasData(users);
+            modelBuilder.Entity<User>().HasQueryFilter(u => !u.IsDeleted).HasData(users);
 
             base.OnModelCreating(modelBuilder);
         }

@@ -74,6 +74,9 @@ namespace AuthenticationApi.Infrastructure.Data.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Password")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
@@ -107,6 +110,7 @@ namespace AuthenticationApi.Infrastructure.Data.Migrations
                             Active = true,
                             CreatedDate = new DateTime(2024, 5, 19, 23, 42, 59, 0, DateTimeKind.Local),
                             Email = "admin@example.com",
+                            IsDeleted = false,
                             Password = "$2a$11$e6ubhLs.8H261Pn0ye0w4OO9npSXdOictGBuUpKEKH4RxngN86oDu",
                             RefreshTokenExpiryTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UpdatedDate = new DateTime(2024, 5, 19, 23, 42, 59, 0, DateTimeKind.Local),
@@ -119,6 +123,7 @@ namespace AuthenticationApi.Infrastructure.Data.Migrations
                             Active = true,
                             CreatedDate = new DateTime(2024, 5, 20, 0, 42, 59, 0, DateTimeKind.Local),
                             Email = "user1@example.com",
+                            IsDeleted = false,
                             Password = "$2a$11$e6ubhLs.8H261Pn0ye0w4OO9npSXdOictGBuUpKEKH4RxngN86oDu",
                             RefreshTokenExpiryTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UpdatedDate = new DateTime(2024, 5, 20, 0, 42, 59, 0, DateTimeKind.Local),
@@ -131,6 +136,7 @@ namespace AuthenticationApi.Infrastructure.Data.Migrations
                             Active = true,
                             CreatedDate = new DateTime(2024, 5, 20, 1, 42, 59, 0, DateTimeKind.Local),
                             Email = "user2@example.com",
+                            IsDeleted = false,
                             Password = "$2a$11$e6ubhLs.8H261Pn0ye0w4OO9npSXdOictGBuUpKEKH4RxngN86oDu",
                             RefreshTokenExpiryTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UpdatedDate = new DateTime(2024, 5, 20, 1, 42, 59, 0, DateTimeKind.Local),

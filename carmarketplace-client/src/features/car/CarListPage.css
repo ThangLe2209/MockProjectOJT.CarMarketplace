@@ -1,7 +1,8 @@
-.ellipsis {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  width: 100%;
-  display: block;
+.car--list-title {
+  color: #333;
+}
+
+.car--list-title:hover {
+  color: #333;
+  opacity: 0.7;
 }

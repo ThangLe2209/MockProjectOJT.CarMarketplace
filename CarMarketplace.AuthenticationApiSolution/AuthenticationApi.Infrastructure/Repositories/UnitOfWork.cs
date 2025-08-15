@@ -12,7 +12,7 @@ namespace AuthenticationApi.Infrastructure.Repositories
     public class UnitOfWork : IUnitOfWork
     {
         private readonly AppDbContext _context;
-        private IRepository<User>? _userRepository;
+        private IUserRepository? _userRepository;
         private IRepository<UserRole>? _userRoleRepository;
         private IRepository<OutboxEvent>? _outboxEventRepository;
 
@@ -21,7 +21,7 @@ namespace AuthenticationApi.Infrastructure.Repositories
             _context = context;
         }
 
-        public IRepository<User> Users => _userRepository ??= new Repository<User>(_context);
+        public IUserRepository Users => _userRepository ??= new UserRepository(_context);
         public IRepository<UserRole> UserRoles => _userRoleRepository ??= new Repository<UserRole>(_context);
         public IRepository<OutboxEvent> OutboxEvents => _outboxEventRepository ??= new Repository<OutboxEvent>(_context);
 

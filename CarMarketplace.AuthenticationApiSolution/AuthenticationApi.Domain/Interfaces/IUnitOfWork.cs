@@ -9,7 +9,7 @@ namespace AuthenticationApi.Domain.Interfaces
 {
     public interface IUnitOfWork
     {
-        IRepository<User> Users { get; }
+        IUserRepository Users { get; }
         IRepository<UserRole> UserRoles { get; }
         IRepository<OutboxEvent> OutboxEvents { get; }
         Task<int> CompleteAsync();

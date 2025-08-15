@@ -11,30 +11,41 @@ namespace CarListingApi.Application.Services
 {
     public class UserService : IUserService
     {
-        private readonly HttpClient _httpClient;
+
+        //private readonly HttpClient _httpClient;
+        private readonly IAuthenticationApi _authApi;
         private readonly ResiliencePipelineProvider<string> _resiliencePipeline;
 
-        public UserService(HttpClient httpClient, ResiliencePipelineProvider<string> resiliencePipeline)
+        //public UserService(HttpClient httpClient, ResiliencePipelineProvider<string> resiliencePipeline)
+        public UserService(IAuthenticationApi authenticationApi, ResiliencePipelineProvider<string> resiliencePipeline)
         {
-            _httpClient = httpClient;
+            //_httpClient = httpClient;
+            _authApi = authenticationApi;
             _resiliencePipeline = resiliencePipeline;
         }
+
+        //public async Task<UserDto?> GetUserAsync(int userId)
+        //{
+        //    var retryPipeline = _resiliencePipeline.GetPipeline("my-retry-pipeline");
+
+        //    return await retryPipeline.ExecuteAsync(async token =>
+        //    {
+        //        var response = await _httpClient.GetAsync($"/api/authentication/{userId}", token);
+        //        if (!response.IsSuccessStatusCode)
+        //            return null;
+        //        //var json = await response.Content.ReadAsStringAsync();
+        //        //Console.WriteLine(json); // See what you actually get
+
+        //        var apiResponse = await response.Content.ReadFromJsonAsync<ApiResponse<UserDto>>();
+        //        return apiResponse?.Data;
+        //    });
+        //}
 
         public async Task<UserDto?> GetUserAsync(int userId)
         {
             var retryPipeline = _resiliencePipeline.GetPipeline("my-retry-pipeline");
-
-            return await retryPipeline.ExecuteAsync(async token =>
-            {
-                var response = await _httpClient.GetAsync($"/api/authentication/{userId}", token);
-                if (!response.IsSuccessStatusCode)
-                    return null;
-                //var json = await response.Content.ReadAsStringAsync();
-                //Console.WriteLine(json); // See what you actually get
-
-                var apiResponse = await response.Content.ReadFromJsonAsync<ApiResponse<UserDto>>();
-                return apiResponse?.Data;
-            });
+            var apiResponse = await retryPipeline.ExecuteAsync(async token => await _authApi.GetUserAsync(userId));
+            return apiResponse?.Data;
         }
     }
 }

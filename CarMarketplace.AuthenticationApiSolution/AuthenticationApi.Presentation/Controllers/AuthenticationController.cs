@@ -74,6 +74,13 @@ namespace AuthenticationApi.Presentation.Controllers
                 HttpContext.Request.Path, "Login successful"));
         }
 
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> SoftDeleteUser(int id)
+        {
+            await _authenticationService.SoftDeleteUserAsync(id);
+            return NoContent();
+        }
+
         [HttpPost("refresh-token")]
         public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequest request)
         {

@@ -12,6 +12,7 @@ namespace AuthenticationApi.Application.Interfaces
         Task SaveRefreshTokenAsync(int userId, string refreshToken);
         Task<User?> GetUserByRefreshTokenAsync(string refreshToken);
         Task<UserDto?> GetUserByIdAsync(int userId);
+        Task SoftDeleteUserAsync(int userId);
         Task<UserDto> CreateUserAsync(UserInputDto userInput);
     }
 }

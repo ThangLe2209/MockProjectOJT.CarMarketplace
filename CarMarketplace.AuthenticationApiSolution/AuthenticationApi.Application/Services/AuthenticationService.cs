@@ -30,11 +30,13 @@ namespace AuthenticationApi.Application.Services
             => await _unitOfWork.Users.GetAll().AnyAsync(u => u.Email!.Equals(userInfo.Email) && u.Password!.Equals(userInfo.Password));
 
         public async Task<User?> GetUserByInfoAsync(UserInputDto userInfo)
-            => await _unitOfWork.Users.GetAll().Include(u => u.UserRole).FirstOrDefaultAsync(u => u.Email!.Equals(userInfo.Email));
+            //=> await _unitOfWork.Users.GetAll().IgnoreQueryFilters().Include(u => u.UserRole).FirstOrDefaultAsync(u => u.Email!.Equals(userInfo.Email)); // Test ignore QueryFilter (Global Filter)
+            => await _unitOfWork.Users.GetAll().IgnoreQueryFilters().Include(u => u.UserRole).FirstOrDefaultAsync(u => u.Email!.Equals(userInfo.Email));
 
         public async Task SaveRefreshTokenAsync(int userId, string refreshToken)
         {
-            var user = await _unitOfWork.Users.GetAll().FirstOrDefaultAsync(u => u.Id == userId);
+            //var user = await _unitOfWork.Users.GetAll().IgnoreQueryFilters().FirstOrDefaultAsync(u => u.Id == userId); // Test ignore QueryFilter (Global Filter)
+            var user = await _unitOfWork.Users.GetAll().IgnoreQueryFilters().FirstOrDefaultAsync(u => u.Id == userId);
             if (user is null)
             {
                 throw new Exception("User not found!");
@@ -60,6 +62,14 @@ namespace AuthenticationApi.Application.Services
         {
             var user = await _unitOfWork.Users.GetByIdAsync(userId);
             return _mapper.Map<UserDto>(user);
+        }
+
+        public async Task SoftDeleteUserAsync(int userId)
+        {
+            var user = await _unitOfWork.Users.GetByIdAsync(userId);
+            if (user == null) return;
+            user.IsDeleted = true;
+            await _unitOfWork.CompleteAsync();
         }
 
         public async Task<UserDto> CreateUserAsync(UserInputDto userInput)

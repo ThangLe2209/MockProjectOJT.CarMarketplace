@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Button, Input, Card, Alert, Spin } from "antd";
 import { login } from "./authActions";
 import { useNavigate } from "react-router-dom";
-import { loginUser } from "../../api/authApi"; // Adjust the import path as necessary
+import { loginUser } from "../../api/authApi";
 
-export default function LoginPage({ onLogin }) {
+export default function LoginPage({ isAuthenticated, onLogin }) {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,12 +14,12 @@ export default function LoginPage({ onLogin }) {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
+    setLoading(true); // Show loading spinner
     try {
       const { accessToken, refreshToken } = await loginUser({
         email,
         password,
       });
-      // Adjust according to your backend's response structure
       dispatch(login({ accessToken, refreshToken }));
       onLogin();
       navigate("/");
@@ -27,6 +27,20 @@ export default function LoginPage({ onLogin }) {
       setError("Login failed. Please check your credentials.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+    }
+    return () => {};
+  }, [isAuthenticated, navigate]);
+
+  // Handle Enter key
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleLogin();
     }
   };
 
@@ -40,24 +54,28 @@ export default function LoginPage({ onLogin }) {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         style={{ marginBottom: 16 }}
+        onKeyDown={handleKeyDown}
+        disabled={loading}
       />
       <Input.Password
         placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         style={{ marginBottom: 16 }}
+        onKeyDown={handleKeyDown}
+        disabled={loading}
       />
-      <Button type="primary" block onClick={handleLogin}>
-        Login
+      <Button type="primary" block onClick={handleLogin} disabled={loading}>
+        {loading ? <Spin size="small" /> : "Login"}
       </Button>
       <Button
         block
         onClick={() => navigate("/register")}
         style={{ marginBottom: 8, marginTop: 8 }}
+        disabled={loading}
       >
         Register
       </Button>
-      {loading && <Spin />}
     </Card>
   );
 }

@@ -18,6 +18,7 @@ namespace CarListingApi.Infrastructure
             services.AddMassTransit(x =>
             {
                 x.AddConsumer<UserRegisteredEventConsumer>();
+                x.AddConsumer<OrderCreatedEventConsumer>();
                 x.UsingRabbitMq((context, cfg) =>
                 {
                     var configuration = context.GetRequiredService<IConfiguration>();
@@ -35,6 +36,10 @@ namespace CarListingApi.Infrastructure
                     cfg.ReceiveEndpoint("user-registered-queue", e =>
                     {
                         e.ConfigureConsumer<UserRegisteredEventConsumer>(context);
+                    });
+                    cfg.ReceiveEndpoint("order-created-queue", e =>
+                    {
+                        e.ConfigureConsumer<OrderCreatedEventConsumer>(context);
                     });
                 });
             });

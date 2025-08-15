@@ -44,8 +44,11 @@ namespace CarListingApi.Application.CQRS.Car.Handler
                 Year = car.Year,
                 Mileage = car.Mileage,
                 Color = car.Color,
+                Image = car.Image,
                 CreatedDate = car.CreatedDate,
                 UpdatedDate = car.UpdatedDate,
+                Status = car.Status,
+                Quantity = car.Quantity,
                 Seller = seller
             };
         }

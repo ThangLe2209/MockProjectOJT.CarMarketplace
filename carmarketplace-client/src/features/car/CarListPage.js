@@ -10,10 +10,11 @@ import {
   Row,
   Col,
   Tooltip,
+  Skeleton,
 } from "antd";
 import { fetchCarListings } from "../../api/carApi";
 import { mockCarListings } from "../../mockCarListings";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useSearchParams, useNavigate, Link } from "react-router-dom";
 import "./CarListPage.css";
 
 const { Search } = Input;
@@ -78,7 +79,23 @@ export default function CarListPage({ isAuthenticated }) {
     );
   };
 
-  if (loading) return <Spin style={{ margin: 40 }} />;
+  // if (loading) return <Spin style={{ margin: 40 }} />;
+  if (loading) {
+    // Show skeleton cards matching your grid layout
+    return (
+      <div style={{ padding: 24 }}>
+        <Row gutter={[16, 16]}>
+          {[...Array(pageSize)].map((_, idx) => (
+            <Col key={idx} xs={24} sm={12} md={12} lg={8} xl={6} xxl={6}>
+              <Card style={{ height: 250 }}>
+                <Skeleton active avatar paragraph={{ rows: 4 }} />
+              </Card>
+            </Col>
+          ))}
+        </Row>
+      </div>
+    );
+  }
   return (
     <div style={{ padding: 24 }}>
       <h2>Car Listings</h2>
@@ -118,23 +135,32 @@ export default function CarListPage({ isAuthenticated }) {
           xl: 4,
           xxl: 4,
         }}
-        dataSource={cars}
+        dataSource={cars.filter((car) => !car.isDeleted)}
         renderItem={(car) => (
           <List.Item>
             <Card
               title={
                 <div className="ellipsis" style={{ width: "100%" }}>
-                  {car.title}
+                  <Link to={`/car/${car.id}`} className="car--list-title">
+                    {car.title}
+                  </Link>
                 </div>
               }
               cover={
                 car.image ? (
-                  <img
-                    loading="lazy"
-                    alt={car.title}
-                    src={car.image}
-                    style={{ width: "100%", height: 180, objectFit: "cover" }}
-                  />
+                  <Link to={`/car/${car.id}`}>
+                    <img
+                      loading="lazy"
+                      alt={car.title}
+                      src={car.image}
+                      style={{ width: "100%", height: 180, objectFit: "cover" }}
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src =
+                          "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg"; // Place default-car.png in your public folder
+                      }}
+                    />
+                  </Link>
                 ) : null
               }
               bodyStyle={{

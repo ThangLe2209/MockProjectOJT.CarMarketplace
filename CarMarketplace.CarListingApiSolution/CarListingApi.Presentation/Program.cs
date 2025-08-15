@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using CarListingApi.Presentation.Exceptions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -63,6 +64,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.ConfigureBuildInExceptionHandler(); // global exception
 
 // app.UseHttpsRedirection();
 app.UseAuthorization();

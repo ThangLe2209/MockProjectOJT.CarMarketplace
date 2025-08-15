@@ -1,19 +1,13 @@
-﻿using CarListingApi.Application.Consumer;
-using CarListingApi.Application.CQRS.Car.Handler;
+﻿using CarListingApi.Application.CQRS.Car.Handler;
 using CarListingApi.Application.CQRS.Car.Validation;
 using CarListingApi.Application.Services;
 using CarMarketplace.Contracts.Logging;
 using FluentValidation;
-using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Polly;
 using Polly.Retry;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Refit;
 
 namespace CarListingApi.Application
 {
@@ -26,13 +20,25 @@ namespace CarListingApi.Application
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateCarHandler).Assembly));
             services.AddValidatorsFromAssemblyContaining<CarInputValidator>();
 
-            // Register HttpClient service
-            // Create Dependency Injection
-            services.AddHttpClient<IUserService, UserService>(options =>
-            {
-                options.BaseAddress = new Uri(config["ApiGateway:BaseAddress"]!);
-                options.Timeout = TimeSpan.FromSeconds(3); // after 3 second request handle not success will throw TaskCanceledException
-            });
+            //// Register HttpClient service
+            //// Create Dependency Injection
+            //services.AddHttpClient<IUserService, UserService>(options =>
+            //{
+            //    options.BaseAddress = new Uri(config["ApiGateway:BaseAddress"]!);
+            //    options.Timeout = TimeSpan.FromSeconds(3); // after 3 second request handle not success will throw TaskCanceledException
+            //});
+
+            // Register Refit client
+            services.AddRefitClient<IAuthenticationApi>()
+                .ConfigureHttpClient(c =>
+                {
+                    c.BaseAddress = new Uri(config["ApiGateway:BaseAddress"]!);
+                    c.Timeout = TimeSpan.FromSeconds(3);
+                });
+
+            // Register your UserService (injects IAuthenticationApi)
+            services.AddScoped<IUserService, UserService>();
+
 
             // Create Retry Strategy
             var retryStrategy = new RetryStrategyOptions()

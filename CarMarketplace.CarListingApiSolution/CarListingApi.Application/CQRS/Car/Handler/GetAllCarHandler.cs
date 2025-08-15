@@ -30,7 +30,7 @@ namespace CarListingApi.Application.CQRS.Car.Handler
                 pageSize = maxCarsPageSize;
             }
 
-            var collection = _unitOfWork.Cars.GetAll();
+            var collection = _unitOfWork.Cars.GetAll().IgnoreQueryFilters();
 
             var searchTerm = request.searchTerm;
             if (!string.IsNullOrWhiteSpace(searchTerm))
