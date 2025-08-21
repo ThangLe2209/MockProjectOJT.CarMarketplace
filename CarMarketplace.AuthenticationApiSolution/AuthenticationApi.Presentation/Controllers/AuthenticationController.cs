@@ -38,6 +38,12 @@ namespace AuthenticationApi.Presentation.Controllers
             return Ok(new SuccessResponse<UserDto>(user, HttpContext.Request.Path));
         }
 
+        [HttpGet("test")]
+        public IActionResult TestCICD()
+        {
+            return Ok("Test CICD");
+        }
+
         [HttpPost("register")]
         public async Task<IActionResult> CreateUserAsync(UserInputDto userInput)
         {
