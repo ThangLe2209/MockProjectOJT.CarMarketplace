@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { HubConnectionBuilder } from "@microsoft/signalr";
-import { Card, Spin, Alert, Row, Col, Button, Skeleton, Select } from "antd";
+import { Card, Alert, Row, Col, Button, Skeleton, Select } from "antd";
 import { fetchCarDetail } from "../../api/carApi";
 import "./CarDetailPage.css";
 import { useDispatch } from "react-redux";

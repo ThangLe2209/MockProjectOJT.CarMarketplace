@@ -1,21 +1,20 @@
-import React, { useEffect, useState } from "react";
 import {
-  List,
-  Card,
-  Spin,
   Alert,
-  Input,
-  Select,
-  Row,
+  Card,
   Col,
-  Tooltip,
+  Input,
+  List,
+  Row,
+  Select,
   Skeleton,
+  Tooltip,
 } from "antd";
+import { useEffect, useState } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { fetchCarListings } from "../../api/carApi";
 import { mockCarListings } from "../../mockCarListings";
-import { useSearchParams, useNavigate, Link } from "react-router-dom";
 import "./CarListPage.css";
-import InfiniteScroll from "react-infinite-scroll-component";
 
 const { Search } = Input;
 const { Option } = Select;

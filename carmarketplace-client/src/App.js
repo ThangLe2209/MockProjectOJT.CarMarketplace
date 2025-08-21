@@ -10,7 +10,7 @@ import "antd/dist/antd.css";
 import "./App.css";
 import { Layout, Menu, Drawer, Button, Grid, Badge } from "antd";
 import { useSelector } from "react-redux";
-import { MenuOutlined, ShoppingCartOutlined } from "@ant-design/icons";
+import { MenuOutlined } from "@ant-design/icons";
 import RegisterPage from "./features/auth/RegisterPage";
 import CarListPageInfiniteScroll from "./features/car/CarListPageInfiniteScroll";
 import { getClaimFromToken } from "./api/authApi";
