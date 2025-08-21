@@ -21,6 +21,7 @@ const { Option } = Select;
 
 export default function CarListPageInfiniteScroll({ isAuthenticated }) {
   const [cars, setCars] = useState([]);
+  // eslint-disable-next-line
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   // const [total, setTotal] = useState(0);
