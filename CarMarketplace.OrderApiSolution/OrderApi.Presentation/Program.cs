@@ -42,8 +42,9 @@ builder.Services.AddAuthorization(authorizationOptions =>
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    options.UseSqlServer(
-        builder.Configuration["ConnectionStrings:OrderConnectionString"]);
+    options.UseNpgsql(builder.Configuration.GetConnectionString("OrderConnectionString"));
+    // options.UseSqlServer(
+    //     builder.Configuration["ConnectionStrings:OrderConnectionString"]);
 });
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
@@ -59,11 +60,11 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+// if (app.Environment.IsDevelopment())
+// {
+app.UseSwagger();
+app.UseSwaggerUI();
+// }
 
 app.ConfigureBuildInExceptionHandler(); // global exception
 //app.UseHttpsRedirection();

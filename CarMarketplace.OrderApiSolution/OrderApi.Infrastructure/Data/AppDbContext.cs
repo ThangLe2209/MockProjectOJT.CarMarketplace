@@ -39,14 +39,14 @@ namespace OrderApi.Infrastructure.Data
 
             foreach (var entityEntry in entries)
             {
-                ((BaseEntity)entityEntry.Entity).UpdatedDate = DateTime.Now;
+                ((BaseEntity)entityEntry.Entity).UpdatedDate = DateTime.UtcNow;
 
                 if (entityEntry.State == EntityState.Added)
                 {
                     var createdDate = ((BaseEntity)entityEntry.Entity).CreatedDate;
                     if (createdDate == DateTime.MinValue) // e.CreatedDate == default(DateTime) 
                     {
-                        ((BaseEntity)entityEntry.Entity).CreatedDate = DateTime.Now;
+                        ((BaseEntity)entityEntry.Entity).CreatedDate = DateTime.UtcNow;
                     }
                 }
             }

@@ -3,17 +3,17 @@ using System;
 using AuthenticationApi.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace AuthenticationApi.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250812034336_AddSoftDeleteUser")]
-    partial class AddSoftDeleteUser
+    [Migration("20250819014018_InitialPostgreMigration")]
+    partial class InitialPostgreMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,38 +21,38 @@ namespace AuthenticationApi.Infrastructure.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "9.0.4")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("AuthenticationApi.Domain.Entities.OutboxEvent", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Headers")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<bool>("IsPublished")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Payload")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasColumnType("character varying(250)");
 
                     b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -63,42 +63,42 @@ namespace AuthenticationApi.Infrastructure.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("Active")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
                         .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("character varying(200)");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Password")
                         .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("character varying(200)");
 
                     b.Property<string>("RefreshToken")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("RefreshTokenExpiryTime")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("character varying(200)");
 
                     b.Property<int>("UserRoleId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -111,12 +111,12 @@ namespace AuthenticationApi.Infrastructure.Data.Migrations
                         {
                             Id = 1,
                             Active = true,
-                            CreatedDate = new DateTime(2024, 5, 19, 23, 42, 59, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2024, 5, 19, 23, 42, 59, 0, DateTimeKind.Utc),
                             Email = "admin@example.com",
                             IsDeleted = false,
                             Password = "$2a$11$e6ubhLs.8H261Pn0ye0w4OO9npSXdOictGBuUpKEKH4RxngN86oDu",
                             RefreshTokenExpiryTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdatedDate = new DateTime(2024, 5, 19, 23, 42, 59, 0, DateTimeKind.Local),
+                            UpdatedDate = new DateTime(2024, 5, 19, 23, 42, 59, 0, DateTimeKind.Utc),
                             UserName = "admin",
                             UserRoleId = 1
                         },
@@ -124,12 +124,12 @@ namespace AuthenticationApi.Infrastructure.Data.Migrations
                         {
                             Id = 2,
                             Active = true,
-                            CreatedDate = new DateTime(2024, 5, 20, 0, 42, 59, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2024, 5, 20, 0, 42, 59, 0, DateTimeKind.Utc),
                             Email = "user1@example.com",
                             IsDeleted = false,
                             Password = "$2a$11$e6ubhLs.8H261Pn0ye0w4OO9npSXdOictGBuUpKEKH4RxngN86oDu",
                             RefreshTokenExpiryTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdatedDate = new DateTime(2024, 5, 20, 0, 42, 59, 0, DateTimeKind.Local),
+                            UpdatedDate = new DateTime(2024, 5, 20, 0, 42, 59, 0, DateTimeKind.Utc),
                             UserName = "user1",
                             UserRoleId = 2
                         },
@@ -137,12 +137,12 @@ namespace AuthenticationApi.Infrastructure.Data.Migrations
                         {
                             Id = 3,
                             Active = true,
-                            CreatedDate = new DateTime(2024, 5, 20, 1, 42, 59, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2024, 5, 20, 1, 42, 59, 0, DateTimeKind.Utc),
                             Email = "user2@example.com",
                             IsDeleted = false,
                             Password = "$2a$11$e6ubhLs.8H261Pn0ye0w4OO9npSXdOictGBuUpKEKH4RxngN86oDu",
                             RefreshTokenExpiryTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdatedDate = new DateTime(2024, 5, 20, 1, 42, 59, 0, DateTimeKind.Local),
+                            UpdatedDate = new DateTime(2024, 5, 20, 1, 42, 59, 0, DateTimeKind.Utc),
                             UserName = "user2",
                             UserRoleId = 2
                         });
@@ -152,22 +152,22 @@ namespace AuthenticationApi.Infrastructure.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasColumnType("character varying(250)");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Value")
                         .IsRequired()
                         .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasColumnType("character varying(250)");
 
                     b.HasKey("Id");
 
@@ -180,14 +180,14 @@ namespace AuthenticationApi.Infrastructure.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Value")
                         .IsRequired()
                         .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasColumnType("character varying(250)");
 
                     b.HasKey("Id");
 

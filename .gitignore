@@ -11,6 +11,7 @@
 *.userosscache
 *.sln.docstates
 **/appsettings.json
+**/appsettings.Development.json
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -271,5 +272,10 @@ __pycache__/
 
 # Cake - Uncomment if you are using it
 # tools/
+
+# Ignore client build files
+carmarketplace-client/build/
+
+
 
 # End of https://www.toptal.com/developers/gitignore/api/aspnetcore

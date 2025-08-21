@@ -19,7 +19,7 @@ namespace CarListingApi.Infrastructure.Data
         {
 
             // Mock data for Cars
-            var tempCurrentDate = new DateTime(2024, 05, 19, 22, 42, 59, DateTimeKind.Local);
+            var tempCurrentDate = new DateTime(2024, 05, 19, 22, 42, 59, DateTimeKind.Utc);
 
             var cars = new List<CarListing>
             {
@@ -202,14 +202,14 @@ namespace CarListingApi.Infrastructure.Data
 
             foreach (var entityEntry in entries)
             {
-                ((BaseEntity)entityEntry.Entity).UpdatedDate = DateTime.Now;
+                ((BaseEntity)entityEntry.Entity).UpdatedDate = DateTime.UtcNow;
 
                 if (entityEntry.State == EntityState.Added)
                 {
                     var createdDate = ((BaseEntity)entityEntry.Entity).CreatedDate;
                     if (createdDate == DateTime.MinValue) // e.CreatedDate == default(DateTime) 
                     {
-                        ((BaseEntity)entityEntry.Entity).CreatedDate = DateTime.Now;
+                        ((BaseEntity)entityEntry.Entity).CreatedDate = DateTime.UtcNow;
                     }
                 }
             }

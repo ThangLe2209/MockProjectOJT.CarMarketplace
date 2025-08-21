@@ -36,7 +36,10 @@ export default function CarDetailPage() {
 
   useEffect(() => {
     const connection = new HubConnectionBuilder()
-      .withUrl(`http://localhost:5281/hub/notifications`) // Change port if needed!
+      .withUrl(
+        process.env.REACT_APP_SIGNALR_URL ||
+          `http://localhost:5281/hub/notifications`
+      ) // Change port if needed!
       .withAutomaticReconnect()
       .build();
 

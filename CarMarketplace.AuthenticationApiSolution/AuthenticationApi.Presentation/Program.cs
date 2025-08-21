@@ -32,8 +32,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    options.UseSqlServer(
-        builder.Configuration["ConnectionStrings:AuthenticationConnectionString"]);
+    options.UseNpgsql(builder.Configuration.GetConnectionString("AuthenticationConnectionString"));
+    // options.UseSqlServer(
+    //     builder.Configuration["ConnectionStrings:AuthenticationConnectionString"]);
 });
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
@@ -49,11 +50,11 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+//}
 
 app.ConfigureBuildInExceptionHandler(); // global exception
 

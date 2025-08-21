@@ -31,7 +31,7 @@ namespace AuthenticationApi.Infrastructure.Data
             };
 
             // Mock data for Users
-            var tempCurrentDate = new DateTime(2024, 05, 19, 22, 42, 59, DateTimeKind.Local);
+            var tempCurrentDate = new DateTime(2024, 05, 19, 22, 42, 59, DateTimeKind.Utc);
             var users = new List<User>
             {
                 new User { Id = 1, UserName = "admin", Password = "$2a$11$e6ubhLs.8H261Pn0ye0w4OO9npSXdOictGBuUpKEKH4RxngN86oDu", Active = true, Email = "admin@example.com", UserRoleId = 1, CreatedDate = tempCurrentDate.AddHours(1), UpdatedDate = tempCurrentDate.AddHours(1) },
@@ -55,14 +55,14 @@ namespace AuthenticationApi.Infrastructure.Data
 
             foreach (var entityEntry in entries)
             {
-                ((BaseEntity)entityEntry.Entity).UpdatedDate = DateTime.Now;
+                ((BaseEntity)entityEntry.Entity).UpdatedDate = DateTime.UtcNow;
 
                 if (entityEntry.State == EntityState.Added)
                 {
                     var createdDate = ((BaseEntity)entityEntry.Entity).CreatedDate;
                     if (createdDate == DateTime.MinValue) // e.CreatedDate == default(DateTime) 
                     {
-                        ((BaseEntity)entityEntry.Entity).CreatedDate = DateTime.Now;
+                        ((BaseEntity)entityEntry.Entity).CreatedDate = DateTime.UtcNow;
                     }
                 }
             }

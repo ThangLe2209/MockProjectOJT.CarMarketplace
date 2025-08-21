@@ -6,15 +6,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddReverseProxy()
     .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
 
-var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>() 
+var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>()
     ?? new[] { "http://localhost:3000" };
 
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend",
         policy => policy
-         // .WithOrigins("http://localhost:3000")
-        //  .AllowAnyOrigin()
+            // .WithOrigins("http://localhost:3000")
+            //  .AllowAnyOrigin()
             .WithOrigins(allowedOrigins)
             .AllowAnyHeader()
             .AllowAnyMethod()
@@ -35,7 +35,7 @@ builder.Services.AddMassTransit(x =>
         var username = rabbitMqSection["Username"] ?? "guest";
         var password = rabbitMqSection["Password"] ?? "guest";
 
-        cfg.Host(host, h =>
+        cfg.Host(host, 5672, rabbitMqSection["VirtualHost"] ?? "/", h =>
         {
             h.Username(username);
             h.Password(password);

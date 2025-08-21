@@ -21,7 +21,7 @@ namespace OrderApi.Infrastructure
                     var username = rabbitMqSection["Username"] ?? "guest";
                     var password = rabbitMqSection["Password"] ?? "guest";
 
-                    cfg.Host(host, h =>
+                    cfg.Host(host, 5672, rabbitMqSection["VirtualHost"] ?? "/", h =>
                     {
                         h.Username(username);
                         h.Password(password);

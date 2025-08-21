@@ -32,6 +32,17 @@ namespace CarListingApi.Presentation.Controllers
             return Ok(new SuccessResponse<IEnumerable<CarListingDto>>(carEntities, HttpContext.Request.Path));
         }
 
+        [HttpGet("checkAuth")]
+        //[Authorize(Roles = "Admin")]
+        [Authorize(Policy = "CheckAdminPolicy")]
+        public async Task<ActionResult<IEnumerable<CarListingDto>>> GetCarsCheckAuth(string? searchTerm = "", int pageNumber = 1, int pageSize = 10, string? sort = "price_asc")
+        {
+            var (carEntities, paginationMetadata) = await _sender.Send(new GetAllCarQuery(searchTerm, pageNumber, pageSize, sort));
+
+            Response.Headers.Append("X-Pagination", JsonSerializer.Serialize(paginationMetadata));
+            return Ok(new SuccessResponse<IEnumerable<CarListingDto>>(carEntities, HttpContext.Request.Path));
+        }
+
         [HttpGet("{carId}", Name = "GetCarById")]
         public async Task<IActionResult> GetCarByIdAsync(int carId)
         {

@@ -3,17 +3,17 @@ using System;
 using CarListingApi.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace CarListingApi.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250812061843_AddSoftDeleteUser")]
-    partial class AddSoftDeleteUser
+    [Migration("20250819151731_InitialPostgreMigration")]
+    partial class InitialPostgreMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,62 +21,69 @@ namespace CarListingApi.Infrastructure.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "9.0.4")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("CarListingApi.Domain.Entities.CarListing", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Color")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Image")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Make")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("Mileage")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Model")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
 
                     b.Property<int>("SellerId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("Year")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -87,7 +94,7 @@ namespace CarListingApi.Infrastructure.Data.Migrations
                         {
                             Id = 1,
                             Color = "Silver",
-                            CreatedDate = new DateTime(2024, 5, 19, 23, 42, 59, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2024, 5, 19, 23, 42, 59, 0, DateTimeKind.Utc),
                             Description = "Well-maintained sedan with excellent fuel economy and low mileage.",
                             Image = "https://hips.hearstapps.com/hmg-prod/amv-prod-cad-assets/images/17q3/685270/2018-toyota-camry-se-25l-test-review-car-and-driver-photo-691169-s-original.jpg",
                             IsDeleted = false,
@@ -95,16 +102,18 @@ namespace CarListingApi.Infrastructure.Data.Migrations
                             Mileage = 45000,
                             Model = "Camry",
                             Price = 18500.00m,
+                            Quantity = 3,
                             SellerId = 1,
+                            Status = "Available",
                             Title = "2018 Toyota Camry SE",
-                            UpdatedDate = new DateTime(2024, 5, 19, 23, 42, 59, 0, DateTimeKind.Local),
+                            UpdatedDate = new DateTime(2024, 5, 19, 23, 42, 59, 0, DateTimeKind.Utc),
                             Year = 2018
                         },
                         new
                         {
                             Id = 2,
                             Color = "Blue",
-                            CreatedDate = new DateTime(2024, 5, 20, 0, 42, 59, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2024, 5, 20, 0, 42, 59, 0, DateTimeKind.Utc),
                             Description = "Sporty and reliable compact car with modern features and great handling.",
                             Image = "https://cdn.jdpower.com/ChromeImageGallery/Expanded/Transparent/640/2020HOC18_640/2020HOC180001_640_01.png",
                             IsDeleted = false,
@@ -112,16 +121,18 @@ namespace CarListingApi.Infrastructure.Data.Migrations
                             Mileage = 30000,
                             Model = "Civic",
                             Price = 20500.00m,
+                            Quantity = 2,
                             SellerId = 2,
+                            Status = "Available",
                             Title = "2020 Honda Civic Sport",
-                            UpdatedDate = new DateTime(2024, 5, 20, 0, 42, 59, 0, DateTimeKind.Local),
+                            UpdatedDate = new DateTime(2024, 5, 20, 0, 42, 59, 0, DateTimeKind.Utc),
                             Year = 2020
                         },
                         new
                         {
                             Id = 3,
                             Color = "Red",
-                            CreatedDate = new DateTime(2024, 5, 20, 1, 42, 59, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2024, 5, 20, 1, 42, 59, 0, DateTimeKind.Utc),
                             Description = "Powerful pickup truck with towing package and spacious cabin.",
                             Image = "https://www.kbb.com/wp-content/uploads/2014/07/2015-ford-f-150-xlt-front-static-600-001.jpg",
                             IsDeleted = false,
@@ -129,16 +140,18 @@ namespace CarListingApi.Infrastructure.Data.Migrations
                             Mileage = 75000,
                             Model = "F-150",
                             Price = 22999.99m,
+                            Quantity = 1,
                             SellerId = 1,
+                            Status = "Available",
                             Title = "2015 Ford F-150 XLT",
-                            UpdatedDate = new DateTime(2024, 5, 20, 1, 42, 59, 0, DateTimeKind.Local),
+                            UpdatedDate = new DateTime(2024, 5, 20, 1, 42, 59, 0, DateTimeKind.Utc),
                             Year = 2015
                         },
                         new
                         {
                             Id = 4,
                             Color = "White",
-                            CreatedDate = new DateTime(2024, 5, 20, 2, 42, 59, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2024, 5, 20, 2, 42, 59, 0, DateTimeKind.Utc),
                             Description = "Comfortable sedan with advanced safety features and smooth ride.",
                             Image = "https://vexstockimages.fastly.carvana.io/stockimages/2019_Chevrolet_Malibu_LT%20Sedan%204D_WHITE_stock_mobile_640x640.png",
                             IsDeleted = false,
@@ -146,16 +159,18 @@ namespace CarListingApi.Infrastructure.Data.Migrations
                             Mileage = 38000,
                             Model = "Malibu",
                             Price = 17999.00m,
+                            Quantity = 1,
                             SellerId = 2,
+                            Status = "Available",
                             Title = "2019 Chevrolet Malibu LT",
-                            UpdatedDate = new DateTime(2024, 5, 20, 2, 42, 59, 0, DateTimeKind.Local),
+                            UpdatedDate = new DateTime(2024, 5, 20, 2, 42, 59, 0, DateTimeKind.Utc),
                             Year = 2019
                         },
                         new
                         {
                             Id = 5,
                             Color = "Black",
-                            CreatedDate = new DateTime(2024, 5, 20, 3, 42, 59, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2024, 5, 20, 3, 42, 59, 0, DateTimeKind.Utc),
                             Description = "Reliable midsize sedan with great fuel efficiency.",
                             Image = "https://images.automatrix.com/1/99228/rKnx6gGpepMj.jpg",
                             IsDeleted = false,
@@ -163,16 +178,18 @@ namespace CarListingApi.Infrastructure.Data.Migrations
                             Mileage = 60000,
                             Model = "Altima",
                             Price = 15500.00m,
+                            Quantity = 1,
                             SellerId = 1,
+                            Status = "Available",
                             Title = "2017 Nissan Altima S",
-                            UpdatedDate = new DateTime(2024, 5, 20, 3, 42, 59, 0, DateTimeKind.Local),
+                            UpdatedDate = new DateTime(2024, 5, 20, 3, 42, 59, 0, DateTimeKind.Utc),
                             Year = 2017
                         },
                         new
                         {
                             Id = 6,
                             Color = "White",
-                            CreatedDate = new DateTime(2024, 5, 20, 4, 42, 59, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2024, 5, 20, 4, 42, 59, 0, DateTimeKind.Utc),
                             Description = "Electric sedan with autopilot and premium interior.",
                             Image = "https://static.cargurus.com/images/forsale/2025/05/28/16/05/2021_tesla_model_3-pic-7064985328337502694-1024x768.jpeg",
                             IsDeleted = false,
@@ -180,16 +197,18 @@ namespace CarListingApi.Infrastructure.Data.Migrations
                             Mileage = 12000,
                             Model = "Model 3",
                             Price = 37999.00m,
+                            Quantity = 1,
                             SellerId = 1,
+                            Status = "Available",
                             Title = "2021 Tesla Model 3 Standard Range Plus",
-                            UpdatedDate = new DateTime(2024, 5, 20, 4, 42, 59, 0, DateTimeKind.Local),
+                            UpdatedDate = new DateTime(2024, 5, 20, 4, 42, 59, 0, DateTimeKind.Utc),
                             Year = 2021
                         },
                         new
                         {
                             Id = 7,
                             Color = "Gray",
-                            CreatedDate = new DateTime(2024, 5, 20, 5, 42, 59, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2024, 5, 20, 5, 42, 59, 0, DateTimeKind.Utc),
                             Description = "Luxury sedan with sporty handling and premium features.",
                             Image = "https://images.hgmsites.net/lrg/2016-bmw-3-series-4-door-sedan-328i-rwd-angular-front-exterior-view_100545095_l.jpg",
                             IsDeleted = false,
@@ -197,16 +216,18 @@ namespace CarListingApi.Infrastructure.Data.Migrations
                             Mileage = 52000,
                             Model = "320i",
                             Price = 20999.00m,
+                            Quantity = 1,
                             SellerId = 1,
+                            Status = "Available",
                             Title = "2016 BMW 3 Series 320i",
-                            UpdatedDate = new DateTime(2024, 5, 20, 5, 42, 59, 0, DateTimeKind.Local),
+                            UpdatedDate = new DateTime(2024, 5, 20, 5, 42, 59, 0, DateTimeKind.Utc),
                             Year = 2016
                         },
                         new
                         {
                             Id = 8,
                             Color = "Blue",
-                            CreatedDate = new DateTime(2024, 5, 20, 6, 42, 59, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2024, 5, 20, 6, 42, 59, 0, DateTimeKind.Utc),
                             Description = "Spacious sedan with smooth ride and great value.",
                             Image = "https://upload.wikimedia.org/wikipedia/commons/1/1f/2014_Hyundai_Sonata_%28LF_MY14%29_Active_sedan_%282018-10-29%29_01.jpg",
                             IsDeleted = false,
@@ -214,16 +235,18 @@ namespace CarListingApi.Infrastructure.Data.Migrations
                             Mileage = 85000,
                             Model = "Sonata",
                             Price = 10999.00m,
+                            Quantity = 1,
                             SellerId = 2,
+                            Status = "Available",
                             Title = "2014 Hyundai Sonata GLS",
-                            UpdatedDate = new DateTime(2024, 5, 20, 6, 42, 59, 0, DateTimeKind.Local),
+                            UpdatedDate = new DateTime(2024, 5, 20, 6, 42, 59, 0, DateTimeKind.Utc),
                             Year = 2014
                         },
                         new
                         {
                             Id = 9,
                             Color = "Green",
-                            CreatedDate = new DateTime(2024, 5, 20, 7, 42, 59, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2024, 5, 20, 7, 42, 59, 0, DateTimeKind.Utc),
                             Description = "All-wheel drive wagon with advanced safety and comfort.",
                             Image = "https://i.pinimg.com/474x/91/24/26/912426871ef2767eb2536724e01672d0.jpg",
                             IsDeleted = false,
@@ -231,16 +254,18 @@ namespace CarListingApi.Infrastructure.Data.Migrations
                             Mileage = 29000,
                             Model = "Outback",
                             Price = 25999.00m,
+                            Quantity = 1,
                             SellerId = 1,
+                            Status = "Available",
                             Title = "2019 Subaru Outback Premium",
-                            UpdatedDate = new DateTime(2024, 5, 20, 7, 42, 59, 0, DateTimeKind.Local),
+                            UpdatedDate = new DateTime(2024, 5, 20, 7, 42, 59, 0, DateTimeKind.Utc),
                             Year = 2019
                         },
                         new
                         {
                             Id = 10,
                             Color = "Silver",
-                            CreatedDate = new DateTime(2024, 5, 20, 8, 42, 59, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2024, 5, 20, 8, 42, 59, 0, DateTimeKind.Utc),
                             Description = "Compact sedan with German engineering and great mileage.",
                             Image = "https://primeautoomaha.com/wp-content/uploads/2023/07/1-2013-volkswagen-vw-jetta-s-silver-prime-auto-omaha.jpg",
                             IsDeleted = false,
@@ -248,9 +273,11 @@ namespace CarListingApi.Infrastructure.Data.Migrations
                             Mileage = 95000,
                             Model = "Jetta",
                             Price = 8999.00m,
+                            Quantity = 1,
                             SellerId = 1,
+                            Status = "Available",
                             Title = "2013 Volkswagen Jetta SE",
-                            UpdatedDate = new DateTime(2024, 5, 20, 8, 42, 59, 0, DateTimeKind.Local),
+                            UpdatedDate = new DateTime(2024, 5, 20, 8, 42, 59, 0, DateTimeKind.Utc),
                             Year = 2013
                         });
                 });
@@ -259,18 +286,18 @@ namespace CarListingApi.Infrastructure.Data.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("EventType")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Payload")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("ProcessedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 

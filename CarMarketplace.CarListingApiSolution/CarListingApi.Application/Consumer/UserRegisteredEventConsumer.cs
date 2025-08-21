@@ -86,7 +86,7 @@ namespace CarListingApi.Application.Consumer
                 Id = eventId,
                 EventType = eventType,
                 Payload = JsonConvert.SerializeObject(payload),
-                ProcessedAt = DateTime.Now // or DateTime.UtcNow
+                ProcessedAt = DateTime.UtcNow // or DateTime.UtcNow
             });
             await _unitOfWork.CompleteAsync();
         }
